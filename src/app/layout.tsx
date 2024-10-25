@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import AppProvider from "../Providers";
+import { Toaster } from "react-hot-toast";
+import { ThemeProvider } from "next-themes";
+import AppProvider from "@/src/Providers";
+import InitialAnimation from "../components/InitialAnimation/InitialAnimation";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -19,17 +22,27 @@ export const metadata: Metadata = {
   description: "Banking App with Finance Management Dashboard Using Next.js",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang={"en"}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AppProvider> {children}</AppProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AppProvider>
+            {children}
+            <Toaster />
+          </AppProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

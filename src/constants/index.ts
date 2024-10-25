@@ -1,23 +1,28 @@
-export const sidebarLinks = [
+export const SidebarLinks = [
   {
     imgURL: "/icons/home.svg",
-    route: "/",
+    route: `/`,
     label: "Home",
   },
   {
     imgURL: "/icons/dollar-circle.svg",
-    route: "/my-banks",
+    route: `/my-banks`,
     label: "My Banks",
   },
   {
     imgURL: "/icons/transaction.svg",
-    route: "/transaction-history",
+    route: `/transaction-history`,
     label: "Transaction History",
   },
   {
     imgURL: "/icons/money-send.svg",
-    route: "/payment-transfer",
+    route: `/payment-transfer`,
     label: "Transfer Funds",
+  },
+  {
+    imgURL: "/icons/warning.png",
+    route: `/report-issues`,
+    label: "Reported Issues",
   },
 ];
 
@@ -51,7 +56,7 @@ export const ITEMS = [
 
 export const topCategoryStyles = {
   "Food and Drink": {
-    bg: "bg-blue-25",
+    bg: "bg-blue-25 dark:bg-blue-500/30",
     circleBg: "bg-blue-100",
     text: {
       main: "text-blue-900",
@@ -64,7 +69,7 @@ export const topCategoryStyles = {
     icon: "/icons/monitor.svg",
   },
   Travel: {
-    bg: "bg-success-25",
+    bg: "bg-success-25 dark:bg-green-500/30",
     circleBg: "bg-success-100",
     text: {
       main: "text-success-900",
@@ -77,7 +82,7 @@ export const topCategoryStyles = {
     icon: "/icons/coins.svg",
   },
   default: {
-    bg: "bg-pink-25",
+    bg: "bg-pink-25 dark:bg-pink-500/30",
     circleBg: "bg-pink-100",
     text: {
       main: "text-pink-900",
@@ -126,6 +131,12 @@ export const transactionCategoryStyles = {
     borderColor: "border-[#12B76A]",
     backgroundColor: "bg-[#12B76A]",
     textColor: "text-[#027A48]",
+    chipBackgroundColor: "bg-[#ECFDF3]",
+  },
+  Travel: {
+    borderColor: "border-[#0047AB]",
+    backgroundColor: "bg-blue-500",
+    textColor: "text-blue-700",
     chipBackgroundColor: "bg-[#ECFDF3]",
   },
   default: {

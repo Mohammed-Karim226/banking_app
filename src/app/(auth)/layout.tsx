@@ -1,7 +1,14 @@
+import InitialAnimation from "@/src/components/InitialAnimation/InitialAnimation";
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <main>{children}</main>;
+  return (
+    <main>
+      <InitialAnimation />
+      {children}
+    </main>
+  );
 }

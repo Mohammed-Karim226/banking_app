@@ -19,13 +19,17 @@ import Image from "next/image";
 import { Compare } from "../../ui/compare";
 import toast from "react-hot-toast";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Eye, EyeOff, Loader } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { TErrorResponse } from "@/src/types";
 import { useRouter } from "next/navigation";
 import { signIn } from "@/src/utils/actions/user.actions";
+import { cn } from "@/lib/utils";
+import Lottie from "lottie-react";
+import bank2 from "./Lottie/bank2.json";
+
 const formSchema = z.object({
   email: z
     .string()
@@ -35,10 +39,18 @@ const formSchema = z.object({
 });
 
 const SignInPage = () => {
-  const [user, setUser] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const [isShown, setIsShown] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsShown(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [isShown]);
 
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
@@ -68,16 +80,23 @@ const SignInPage = () => {
     }
   }
   return (
-    <section className="flex w-full h-screen justify-center items-center">
-      <div className="w-1/2 max-sm:w-full bg-white gap-12 flex flex-col justify-center items-center">
+    <section
+      className={cn(
+        "flex z-0 dark:bg-stone-500 w-full h-screen justify-center items-center",
+        isShown && "hidden"
+      )}
+    >
+      <div className="w-1/2 max-sm:w-full dark:bg-stone-500 bg-white gap-12 flex flex-col justify-center items-center">
         <header className=" flex flex-col justify-start items-start gap-6 w-[420px] max-sm:w-[350px]">
           <div className="flex-center gap-2">
             <Image src={"/icons/logo.png"} alt="logo" width={34} height={34} />
-            <h1 className="font-bold text-2xl text-sky-950">Bank_Logo</h1>
+            <h1 className="font-bold text-2xl text-sky-950 dark:text-slate-900">
+              NexPay
+            </h1>
           </div>
           <div className="flex flex-col justify-start items-start gap-2">
-            <h1 className="header-box-title">Login</h1>
-            <p className="header-box-subtext">
+            <h1 className="header-box-title dark:text-slate-900">Login</h1>
+            <p className="header-box-subtext dark:text-slate-900">
               Welcome back! Please enter your details.
             </p>
           </div>
@@ -95,7 +114,7 @@ const SignInPage = () => {
                       <Input
                         placeholder="Email@io.com"
                         {...field}
-                        className="placeholder:text-gray-500 placeholder:text-base placeholder:font-normal w-[360px] focus-visible:outline-none focus:border-none focus:ring-1 focus:ring-blue-500 border border-gray-300 shadow-sm"
+                        className="dark:bg-stone-400 focus-visible:dark:ring-offset-0 dark:border-slate-900 placeholder:text-gray-500 placeholder:text-base placeholder:font-normal w-[360px] focus-visible:outline-none focus:border-none focus:ring-1 focus:ring-blue-500 border border-gray-300 shadow-sm"
                       />
                     </FormControl>
                     <FormMessage className="form-message" />
@@ -114,7 +133,7 @@ const SignInPage = () => {
                           type={showPassword ? "text" : "password"}
                           placeholder="Password"
                           {...field}
-                          className="placeholder:text-gray-500 placeholder:text-base placeholder:font-normal w-full pr-10 focus-visible:outline-none focus:border-none focus:ring-1 focus:ring-blue-500 border border-gray-300 shadow-sm"
+                          className="dark:bg-stone-400 focus-visible:dark:ring-offset-0 dark:border-slate-900 placeholder:text-gray-500 placeholder:text-base placeholder:font-normal w-full pr-10 focus-visible:outline-none focus:border-none focus:ring-1 focus:ring-blue-500 border border-gray-300 shadow-sm"
                         />
                         <motion.div
                           initial={{ opacity: 0 }}
@@ -125,9 +144,9 @@ const SignInPage = () => {
                           onClick={togglePasswordVisibility}
                         >
                           {showPassword ? (
-                            <EyeOff size={20} />
+                            <EyeOff size={20} className="dark:text-gray-800" />
                           ) : (
-                            <Eye size={20} />
+                            <Eye size={20} className="dark:text-gray-800" />
                           )}
                         </motion.div>
                       </div>
@@ -140,13 +159,20 @@ const SignInPage = () => {
                 <Button
                   disabled={loading}
                   type="submit"
-                  className="form-btn w-full !mt-6"
+                  className="form-btn w-full !mt-6 dark:text-slate-900"
                 >
-                  {loading ? <Loader /> : "Login"}
+                  {loading ? (
+                    <Loader style={{ animation: "spin 1s linear infinite" }} />
+                  ) : (
+                    "Login"
+                  )}
                 </Button>
                 <h2 className="flex text-slate-600 text-sm font-normal justify-center items-center gap-1">
                   Don’t have an account?
-                  <Link href={"/sign-up"} className="form-link">
+                  <Link
+                    href={`/sign-up`}
+                    className="form-link dark:text-slate-900"
+                  >
                     Sign Up
                   </Link>
                 </h2>
@@ -155,17 +181,12 @@ const SignInPage = () => {
           </Form>
         </div>
       </div>
-      <div className="w-1/2 max-sm:hidden bg-sky-50 h-screen flex justify-center items-center">
-        <div className="w-full h-[60vh] px-1 md:px-8 flex items-center justify-center [perspective:800px] [transform-style:preserve-3d]">
-          <div
-            style={{
-              transform: "rotateX(10deg) translateZ(80px)",
-            }}
-            className="p-1 md:p-2 border rounded-3xl dark:bg-neutral-900 bg-neutral-100  border-neutral-200 dark:border-neutral-800 mx-auto w-3/4 h-1/2 md:h-3/4"
-          >
+      <div className="w-1/2 max-sm:hidden dark:bg-stone-500 bg-sky-50 h-full flex justify-center items-center">
+        {/* <div className="size-full px-1 md:px-8 flex items-center justify-center [perspective:800px] [transform-style:preserve-3d]">
+          <div className="p-1 md:p-2  rounded-3xl dark:bg-neutral-900 bg-neutral-100   dark:border-neutral-800 mx-auto size-full">
             <Compare
-              firstImage="https://assets.aceternity.com/notes-dark.png"
-              secondImage="https://assets.aceternity.com/linear-dark.png"
+              firstImage={`${()}`}
+              secondImage={`${(<Lottie animationData={bank2} />)}`}
               firstImageClassName="object-cover object-left-top w-full"
               secondImageClassname="object-cover object-left-top w-full"
               className="w-full h-full rounded-[22px] md:rounded-lg"
@@ -173,7 +194,8 @@ const SignInPage = () => {
               autoplay={true}
             />
           </div>
-        </div>
+        </div> */}
+        <Lottie animationData={bank2} loop={true} />
       </div>
     </section>
   );

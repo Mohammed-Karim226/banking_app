@@ -1,5 +1,6 @@
 import MobileNavBar from "@/src/components/Layouts/MobileNavBar/MobileNavBar";
 import SideBar from "@/src/components/Layouts/SideBar/SideBar";
+import WelcomeScreens from "@/src/components/WelcomeScreens/WelcomeScreens";
 import { getLoggedInUser } from "@/src/utils/actions/user.actions";
 import Image from "next/image";
 import { redirect } from "next/navigation";
@@ -24,6 +25,8 @@ export default async function RootLayout({
             <MobileNavBar user={userInfo} />
           </div>
         </div>
+        <WelcomeScreens user={userInfo} />
+
         {children}
       </div>
     </main>

@@ -10,10 +10,11 @@ declare type SearchParamProps = {
 declare type SignUpParams = {
   firstName: string;
   lastName: string;
-  address: string;
+  address1: string;
+  city: string;
   state: string;
-  postCode: string;
-  birthDate: string;
+  postalCode: string;
+  dateOfBirth: string;
   ssn: string;
   email: string;
   password: string;
@@ -33,7 +34,7 @@ declare type User = {
   firstName: string;
   lastName: string;
   name: string;
-  labels: string;
+  labels?: string;
   address1: string;
   city: string;
   state: string;
@@ -60,10 +61,11 @@ declare type Account = {
   type: string;
   subtype: string;
   appwriteItemId: string;
-  sharableId: string;
+  sharaebleId: string;
 };
 
 declare type Transaction = {
+  [x: string]: string;
   id: string;
   $id: string;
   name: string;
@@ -89,7 +91,7 @@ declare type Bank = {
   accessToken: string;
   fundingSourceUrl: string;
   userId: string;
-  sharableId: string;
+  sharaebleId: string;
 };
 
 declare type AccountTypes =
@@ -129,11 +131,11 @@ declare type NewDwollaCustomerParams = {
   lastName: string;
   email: string;
   type: string;
-  address: string;
+  address1: string;
   city: string;
   state: string;
-  postCode: string;
-  birthDate: string;
+  postalCode: string;
+  dateOfBirth: string;
   ssn: string;
 };
 
@@ -177,6 +179,7 @@ declare interface PlaidLinkProps {
   user: User;
   variant?: "primary" | "ghost";
   dwollaCustomerId?: string;
+  isOpen?: boolean;
 }
 
 // declare type User = sdk.Models.Document & {
@@ -228,6 +231,7 @@ declare interface RecentTransactionsProps {
   transactions: Transaction[];
   appwriteItemId: string;
   page: number;
+  userId?: string;
 }
 
 declare interface TransactionHistoryTableProps {
@@ -313,7 +317,7 @@ declare interface createBankAccountProps {
   accountId: string;
   bankId: string;
   fundingSourceUrl: string;
-  sharableId: string;
+  sharaebleId: string;
 }
 
 declare interface getBanksProps {
@@ -330,4 +334,31 @@ declare interface getBankByAccountIdProps {
 export type TErrorResponse = {
   code: number;
   message: string;
+};
+
+declare type TNote = {
+  id: string;
+  title: string;
+  content: string;
+  createdAt: string;
+  updatedtedAt: string;
+};
+
+declare type TCreateNoteParams = {
+  userId: string;
+  title: string;
+  content: string;
+};
+declare type TUpdateNoteParams = {
+  noteId: string;
+  title: string;
+  content: string;
+};
+
+declare type TCreateIssue = {
+  userId: string;
+  transactionId: string;
+  subject: string;
+  description: string;
+  id?: string;
 };

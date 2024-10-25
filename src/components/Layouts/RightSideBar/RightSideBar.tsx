@@ -1,104 +1,78 @@
 "use client";
-import { cn } from "@/lib/utils";
-import { RightSidebarProps } from "@/src/types";
-import { AddSquare } from "iconsax-react";
-import Link from "next/link";
+import { cn, countTransactionCategories } from "@/lib/utils";
+import { CategoryCount, RightSidebarProps } from "@/src/types";
 import BankCard from "../../BankCard/BankCard";
 import { motion } from "framer-motion";
-import { FaShieldAlt, FaStar, FaGem } from "react-icons/fa";
+import CategoryItem from "./CategoryItem";
+import PlaidLink from "../../Auth/SignUp/PlaidLink";
+import GetNotes from "./GetNotes";
 
 const RightSideBar = ({ user, transactions, banks }: RightSidebarProps) => {
+  const categories: CategoryCount[] = countTransactionCategories(transactions);
+
   return (
-    <aside className={cn("right-sidebar")}>
-      <section className="flex flex-col pb-8">
-        <div className="profile-banner" />
-        <div className="profile">
+    <aside className={cn("right-sidebar !gap-2 dark:bg-stone-400")}>
+      <section className="flex flex-col">
+        <div className="profile-banner dark:bg-stone-400" />
+        <div className="profile dark:bg-stone-400">
           <motion.div
             initial={{ opacity: 0, translateX: -100 }}
             animate={{ opacity: 1, translateX: 0 }}
             transition={{ duration: 1 }}
             exit={{ opacity: 0, translateX: -100 }}
-            className="profile-img"
+            className="profile-img dark:bg-stone-400 dark:!border-gray-300"
           >
             <motion.span
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1.2 }}
               exit={{ opacity: 0 }}
-              className="text-5xl text-blue-500 font-bold"
+              className="text-5xl capitalize text-blue-500 dark:text-slate-500 font-bold"
             >
-              {user?.name[0]}
+              {user?.firstName[0]}
             </motion.span>
           </motion.div>
-          <div className="profile-details">
+          <div className="profile-details dark:bg-stone-400">
             <motion.h1
               initial={{ opacity: 0, translateY: -20 }}
               animate={{ opacity: 1, translateY: 0 }}
               transition={{ duration: 1 }}
-              className="profile-name"
+              className="profile-name capitalize dark:text-slate-600"
             >
-              {user?.name ?? ""}
+              {`${user?.firstName ?? ""} ${user?.lastName ?? ""}`}
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, translateY: 20 }}
               animate={{ opacity: 1, translateY: 0 }}
               transition={{ duration: 1 }}
-              className="profile-email"
+              className="profile-email dark:text-slate-600"
             >
               {user?.email}
-            </motion.p>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 1 }}
-              className={cn(
-                "text-sm font-medium uppercase flex items-center justify-center px-2 py-[2px] rounded-md", // Base styling
-                user?.labels[0] === "admin"
-                  ? "bg-red-100 text-red-600 border-l-2 border-red-500" // Admin styling
-                  : user?.labels[0] === "mvp"
-                  ? "bg-blue-100 text-blue-600 border-l-2 border-blue-500" // MVB styling
-                  : user?.labels[0] === "premium"
-                  ? "bg-yellow-100 text-yellow-600 border-l-2 border-yellow-500" // Premium styling
-                  : "bg-gray-100 text-slate-600" // Default styling for regular users
-              )}
-            >
-              {user?.labels[0] === "admin" && (
-                <FaShieldAlt className="w-4 h-4 mr-1" /> // Admin icon
-              )}
-              {user?.labels[0] === "mvp" && (
-                <FaStar className="w-4 h-4 mr-1" /> // MVB icon
-              )}
-              {user?.labels[0] === "premium" && (
-                <FaGem className="w-4 h-4 mr-1" /> // Premium icon
-              )}
-              {user?.labels[0] ?? "UserEmail@io.com"}
             </motion.p>
           </div>
         </div>
       </section>
-      <section className="banks">
-        <div className="w-full flex justify-between">
+      <section className="banks dark:bg-stone-400">
+        <div className="w-full flex justify-between dark:bg-stone-400">
           <motion.h1
             initial={{ opacity: 0, translateX: -100 }}
             animate={{ opacity: 1, translateX: 0 }}
             transition={{ duration: 1 }}
-            className="header-2"
+            className="flex justify-center text-gray-900 dark:text-slate-600 text-lg font-semibold items-center"
           >
             My Banks
           </motion.h1>
-          <Link href={"/"} className="flex gap-1 justify-center items-center">
-            <motion.div
-              initial={{ opacity: 0, translateX: 100 }}
-              animate={{ opacity: 1, translateX: 0 }}
-              transition={{ duration: 1 }}
-              className="flex gap-1 justify-center items-center"
-            >
-              <AddSquare size="20" color="#475467" />{" "}
-              <h2 className="text-16 text-gray-600 font-semibold">Add Bank</h2>
-            </motion.div>
-          </Link>
+
+          <motion.div
+            initial={{ opacity: 0, translateX: 100 }}
+            animate={{ opacity: 1, translateX: 0 }}
+            transition={{ duration: 1 }}
+            className="flex gap-1 justify-center items-center"
+          >
+            <PlaidLink user={user} variant="ghost" />
+          </motion.div>
         </div>
-        {banks?.length > 0 && (
+        {banks?.length >= 0 && (
           <div className="relative flex flex-col justify-center items-center gap-5 flex-1">
             <motion.div
               initial={{ opacity: 0 }}
@@ -107,9 +81,9 @@ const RightSideBar = ({ user, transactions, banks }: RightSidebarProps) => {
               className="z-10 relative "
             >
               <BankCard
-                key={banks[0].$id}
+                key={banks[0]?.$id}
                 account={banks[0]}
-                userName={`${user?.name ?? ""}`}
+                userName={`${user?.firstName ?? ""} ${user?.lastName ?? ""}`}
                 showBalance={false}
               />
             </motion.div>
@@ -121,15 +95,26 @@ const RightSideBar = ({ user, transactions, banks }: RightSidebarProps) => {
                 className="absolute right-0 w-[90%] top-8 z-0"
               >
                 <BankCard
-                  key={banks[1].$id}
+                  key={banks[1]?.$id}
                   account={banks[1]}
-                  userName={`${user?.name ?? ""}`}
+                  userName={`${user?.firstName ?? ""} ${user?.lastName ?? ""}`}
                   showBalance={false}
                 />
               </motion.div>
             )}
           </div>
         )}
+        <div className="flex flex-col gap-6 flex-1 mt-10">
+          <h2 className="header-2 dark:text-slate-600">Top Categories</h2>
+          <div className="space-y-5 ">
+            {categories.map((c, index) => (
+              <CategoryItem key={c.name} category={c} />
+            ))}
+          </div>
+        </div>
+        <div className="w-full flex justify-start items-start">
+          <GetNotes userId={user.$id} />
+        </div>
       </section>
     </aside>
   );

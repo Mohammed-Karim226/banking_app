@@ -10,20 +10,32 @@ import {
   Sheet,
   SheetFooter,
 } from "../../ui/sheet";
+import { useTheme } from "next-themes";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../../ui/dropdown-menu";
+
 import Image from "next/image";
-import { sidebarLinks } from "@/src/constants";
+import { SidebarLinks } from "@/src/constants";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { logoutAccount } from "@/src/utils/actions/user.actions";
-import { motion } from "framer-motion";
-import { FaShieldAlt, FaStar, FaGem } from "react-icons/fa";
+import { Button } from "../../ui/button";
+import { NotificationsDropdown } from "../../Notifications/Notifications";
+import PlaidLink from "../../Auth/SignUp/PlaidLink";
 
 const MobileNavBar = ({ user }: SiderbarProps) => {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+
+  const { setTheme } = useTheme();
 
   const handleLogout = async () => {
     const logout = await logoutAccount();
@@ -35,7 +47,7 @@ const MobileNavBar = ({ user }: SiderbarProps) => {
     setOpen(false);
   };
   return (
-    <section className="w-full max-w-[264px]">
+    <section className="w-full max-w-[264px] ">
       <Sheet onOpenChange={setOpen} open={open}>
         <SheetTrigger>
           <Image
@@ -48,7 +60,7 @@ const MobileNavBar = ({ user }: SiderbarProps) => {
         </SheetTrigger>
         <SheetContent
           side={"left"}
-          className="border-none bg-white flex flex-col justify-between"
+          className="border-none dark:bg-stone-400 bg-white flex flex-col justify-between"
         >
           <div>
             <Link
@@ -61,9 +73,11 @@ const MobileNavBar = ({ user }: SiderbarProps) => {
                 width={34}
                 height={34}
               />
-              <h1 className="text-26 font-medium">Bank_Logo</h1>
+              <h1 className="text-26 font-medium dark:text-slate-600">
+                NexPay
+              </h1>
             </Link>
-            {sidebarLinks.map((link, idx) => {
+            {SidebarLinks.map((link, idx) => {
               const isActive =
                 pathname === link?.route ||
                 pathname.startsWith(`${link.route}/`);
@@ -83,73 +97,108 @@ const MobileNavBar = ({ user }: SiderbarProps) => {
                       width={20}
                       height={20}
                       className={cn({
-                        "brightness-[3] invert-0": isActive,
+                        "brightness-[3] invert-0 dark:brightness-150": isActive,
                       })}
                     />
                   </div>
                   <p
-                    className={cn("text-16 font-semibold text-black-2", {
-                      "text-white": isActive,
-                    })}
+                    className={cn(
+                      "text-16 dark:text-slate-700 font-semibold text-black-2",
+                      {
+                        "text-white": isActive,
+                      }
+                    )}
                   >
                     {link.label}
                   </p>
                 </Link>
               );
             })}
+            <PlaidLink user={user} isOpen={open} />
+            <NotificationsDropdown />
           </div>
           <SheetFooter>
-            <footer className="flex pt-4 border-t-2 border-slate-100 justify-center items-center gap-3">
+            <footer className="flex pt-4 border-t-2 dark:border-slate-600 border-slate-100 justify-center items-center gap-3">
               <div className="flex justify-center items-center size-10 overflow-hidden rounded-full bg-slate-100">
-                <Image
-                  src={"/icons/avatar-svgrepo-com.svg"}
-                  alt="user"
-                  width={30}
-                  height={30}
-                  className="rounded-full"
-                />
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="overflow-hidden"
+                    >
+                      <Image
+                        src={"/icons/avatar-svgrepo-com.svg"}
+                        alt="user"
+                        width={30}
+                        height={30}
+                        className="rounded-full"
+                      />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    align="end"
+                    className="bg-white translate-x-6 dark:bg-stone-500 dark:border-transparent"
+                  >
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="overflow-hidden w-full dark:border-stone-800 dark:text-slate-700"
+                        >
+                          Dark Mode
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent
+                        align="end"
+                        className="bg-white mb-1 dark:border-slate-700 translate-x-1 dark:bg-gray-400"
+                      >
+                        <DropdownMenuItem
+                          onClick={() => setTheme("light")}
+                          className="cursor-pointer dark:text-gray-800 "
+                        >
+                          Light
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => setTheme("dark")}
+                          className="cursor-pointer dark:text-gray-800"
+                        >
+                          Dark
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => setTheme("system")}
+                          className="cursor-pointer dark:text-gray-800"
+                        >
+                          System
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                    {/* second */}
+                    <Link
+                      href={"/user-info"}
+                      className="flex justify-center rounded-md items-center border mt-1 p-2 dark:border-stone-800 dark:text-slate-700 font-normal"
+                    >
+                      View Profile
+                    </Link>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
               <div className="flex flex-col justify-start items-start gap-[1px]">
                 <h2 className="text-slate-700 text-sm font-semibold">
-                  {user?.name ?? "User Name"}
+                  {`${user?.firstName} ${user?.lastName}` ?? "User Name"}
                 </h2>
                 <p className="text-slate-600 text-sm font-normal">
                   {user?.email ?? "UserEmail@io.com"}
                 </p>
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 1, delay: 1 }}
-                  className={cn(
-                    "text-xs font-normal flex mt-[1px] items-center justify-center px-1 py-[1px] rounded-md", // Base styling
-                    user?.labels[0] === "admin"
-                      ? "bg-red-100 text-red-600 border-l-2 border-red-500" // Admin styling
-                      : user?.labels[0] === "mvp"
-                      ? "bg-blue-100 text-blue-600 border-l-2 border-blue-500" // MVB styling
-                      : user?.labels[0] === "premium"
-                      ? "bg-yellow-100 text-yellow-600 border-l-2 border-yellow-500" // Premium styling
-                      : "bg-gray-100 text-slate-600" // Default styling for regular users
-                  )}
-                >
-                  {user?.labels[0] === "admin" && (
-                    <FaShieldAlt className="w-2 h-2 mr-1" /> // Admin icon
-                  )}
-                  {user?.labels[0] === "mvp" && (
-                    <FaStar className="w-2 h-2 mr-1" /> // MVB icon
-                  )}
-                  {user?.labels[0] === "premium" && (
-                    <FaGem className="w-2 h-2 mr-1" /> // Premium icon
-                  )}
-                  {user?.labels[0] ?? "UserEmail@io.com"}
-                </motion.p>
               </div>
               <div className="flex size-9 justify-center items-center">
                 <button onClick={handleLogout}>
                   <Image
                     src={"/icons/logout.svg"}
                     alt="user"
-                    width={15}
-                    height={15}
+                    width={25}
+                    height={25}
                     className="rounded-full"
                   />
                 </button>

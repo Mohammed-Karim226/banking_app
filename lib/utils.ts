@@ -3,6 +3,7 @@ import { type ClassValue, clsx } from "clsx";
 import qs from "query-string";
 import { twMerge } from "tailwind-merge";
 import { AccountTypes, CategoryCount, Transaction } from "../src/types/index";
+import jsPDF from "jspdf";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -193,4 +194,86 @@ export const getTransactionStatus = (date: Date) => {
   twoDaysAgo.setDate(today.getDate() - 2);
 
   return date > twoDaysAgo ? "Processing" : "Success";
+};
+
+export const exportToCSV = (transactions: any) => {
+  if (!Array.isArray(transactions) || transactions.length === 0) {
+    alert("No transactions available to export.");
+    return;
+  }
+
+  const csvRows = [];
+  const headers = [
+    "ID",
+    "Name",
+    "Amount",
+    "Status",
+    "Date",
+    "Channel",
+    "Category",
+  ];
+  csvRows.push(headers.join(","));
+
+  // Format each transaction and add to rows
+  for (const transaction of transactions) {
+    const row = [
+      transaction.id,
+      removeSpecialCharacters(transaction.name),
+      formatAmount(transaction.amount),
+      getTransactionStatus(new Date(transaction.date)),
+      formatDateTime(new Date(transaction.date)).dateTime,
+      transaction.paymentChannel,
+      transaction.category,
+    ];
+    csvRows.push(row.join(","));
+  }
+
+  const blob = new Blob([csvRows.join("\n")], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "transactions.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+};
+
+export const exportToPDF = (transactions: any) => {
+  if (!Array.isArray(transactions) || transactions.length === 0) {
+    alert("No transactions available to export.");
+    return;
+  }
+
+  const doc = new jsPDF();
+  doc.setFontSize(12);
+  doc.text("Transaction Report", 20, 20);
+
+  const headers = [
+    "ID",
+    "Name",
+    "Amount",
+    "Status",
+    "Date",
+    "Channel",
+    "Category",
+  ];
+  headers.forEach((header, index) => {
+    doc.text(header, 20 + index * 30, 30); // 30 units apart
+  });
+
+  transactions.forEach((transaction, index) => {
+    const row = [
+      transaction.id,
+      removeSpecialCharacters(transaction.name),
+      formatAmount(transaction.amount),
+      getTransactionStatus(new Date(transaction.date)),
+      formatDateTime(new Date(transaction.date)).dateTime,
+      transaction.paymentChannel,
+      transaction.category,
+    ];
+    row.forEach((cell, cellIndex) => {
+      doc.text(cell, 20 + cellIndex * 30, 40 + index * 10);
+    });
+  });
+
+  doc.save("transactions.pdf");
 };
