@@ -77,7 +77,8 @@ export function formatAmount(amount: number): string {
   return formatter.format(amount);
 }
 
-export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));
+export const parseStringify = <T>(value: T): T =>
+  JSON.parse(JSON.stringify(value));
 
 export const removeSpecialCharacters = (value: string) => {
   return value.replace(/[^\w\s]/gi, "");
@@ -196,7 +197,7 @@ export const getTransactionStatus = (date: Date) => {
   return date > twoDaysAgo ? "Processing" : "Success";
 };
 
-export const exportToCSV = (transactions: any) => {
+export const exportToCSV = (transactions: Transaction[]) => {
   if (!Array.isArray(transactions) || transactions.length === 0) {
     alert("No transactions available to export.");
     return;
@@ -237,7 +238,7 @@ export const exportToCSV = (transactions: any) => {
   URL.revokeObjectURL(url);
 };
 
-export const exportToPDF = (transactions: any) => {
+export const exportToPDF = (transactions: Transaction[]) => {
   if (!Array.isArray(transactions) || transactions.length === 0) {
     alert("No transactions available to export.");
     return;
