@@ -10,7 +10,7 @@ import {
 } from "../ui/sheet";
 
 import { formatAmount, formatDateTime } from "@/lib/utils";
-import { Printer, AlertCircle } from "lucide-react";
+import { Printer } from "lucide-react";
 import { Button } from "../ui/button";
 import ReportIssueForm from "./ReportIssueForm";
 

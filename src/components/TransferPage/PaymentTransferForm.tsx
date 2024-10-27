@@ -8,10 +8,8 @@ import { Button } from "../ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "../ui/form";
 import { Textarea } from "../ui/textarea";
@@ -64,7 +62,7 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
 
       const transformParams = {
         sourceFundingSourceUrl: senderBank?.fundingSourceUrl,
-        destinationFundingSourceUrl: receiverBank.fundingSourceUrl,
+        destinationFundingSourceUrl: receiverBank?.fundingSourceUrl,
         amount: values?.amount,
       };
 
@@ -76,8 +74,8 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
           amount: values?.amount,
           senderId: senderBank.userId.$id,
           senderBankId: senderBank.$id,
-          receiverId: receiverBank.userId.$id,
-          receiverBankId: receiverBank.$id,
+          receiverId: receiverBank?.userId.$id ?? "",
+          receiverBankId: receiverBank?.$id ?? "",
           email: values?.email,
         };
         const newTransaction = await createTransaction(transaction);
@@ -119,7 +117,7 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
           <FormField
             control={form.control}
             name="senderBank"
-            render={({ field }) => (
+            render={({}) => (
               <FormItem>
                 <FormControl>
                   <div className="flex max-sm:flex-col border-b dark:border-neutral-800 border-gray-200 justify-start items-start gap-6 w-full pb-4 pt-1">
@@ -191,10 +189,10 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
                   <div className="flex max-sm:flex-col border-b dark:border-neutral-800 border-gray-200 justify-start items-start gap-6 w-full pb-4 ">
                     <div className="flex flex-col max-w-[280px] justify-start items-start gap-[1px]">
                       <p className="text-gray-900 font-semibold text-sm dark:text-neutral-800">
-                        Recipient's Email Address
+                        Recipient&apos;s Email Address
                       </p>
                       <p className="text-slate-600 text-xs font-normal dark:text-neutral-800">
-                        Enter the recipient's email for confirmation and
+                        Enter the recipient&apos;s email for confirmation and
                         communication purposes.
                       </p>
                     </div>
@@ -220,7 +218,7 @@ const PaymentTransferForm = ({ accounts }: PaymentTransferFormProps) => {
                   <div className="flex max-sm:flex-col border-b dark:border-neutral-800 border-gray-200 justify-start items-start gap-6 w-full pb-4 ">
                     <div className="flex flex-col max-w-[280px] justify-start items-start gap-[1px]">
                       <p className="text-gray-900 font-semibold text-sm dark:text-neutral-800">
-                        Recipient's Bank Account Number
+                        Recipient&apos;s Bank Account Number
                       </p>
                       <p className="text-slate-600 text-xs font-normal dark:text-neutral-800">
                         Provide the correct account number to transfer funds

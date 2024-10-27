@@ -107,7 +107,7 @@ const RightSideBar = ({ user, transactions, banks }: RightSidebarProps) => {
         <div className="flex flex-col gap-6 flex-1 mt-10">
           <h2 className="header-2 dark:text-slate-600">Top Categories</h2>
           <div className="space-y-5 ">
-            {categories.map((c, index) => (
+            {categories.map((c) => (
               <CategoryItem key={c.name} category={c} />
             ))}
           </div>

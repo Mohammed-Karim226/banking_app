@@ -1,13 +1,6 @@
 "use server";
 
-import {
-  ACHClass,
-  CountryCode,
-  TransferAuthorizationCreateRequest,
-  TransferCreateRequest,
-  TransferNetwork,
-  TransferType,
-} from "plaid";
+import { CountryCode } from "plaid";
 
 import { plaidClient } from "../plaid";
 
@@ -48,7 +41,7 @@ export const getAccounts = async ({ userId }: getAccountsProps) => {
           id: accountData.account_id,
           availableBalance: accountData.balances.available!,
           currentBalance: accountData.balances.current!,
-          institutionId: institution.institution_id,
+          institutionId: institution?.institution_id,
           name: accountData.name,
           officialName: accountData.official_name,
           mask: accountData.mask!,
@@ -116,7 +109,7 @@ export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
       id: accountData.account_id,
       availableBalance: accountData.balances.available!,
       currentBalance: accountData.balances.current!,
-      institutionId: institution.institution_id,
+      institutionId: institution?.institution_id,
       name: accountData.name,
       officialName: accountData.official_name,
       mask: accountData.mask!,

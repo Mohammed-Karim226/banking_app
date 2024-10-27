@@ -81,7 +81,7 @@ export const signIn = async ({ email, password }: signInProps) => {
 };
 
 export const signUp = async ({ password, ...userData }: SignUpParams) => {
-  const { email, firstName, lastName, address1, postalCode } = userData;
+  const { email, firstName, lastName } = userData;
 
   let newUserAccount;
 
@@ -443,7 +443,16 @@ export const getIssue = async ({ userId }: { userId: string }) => {
       ISSUE_COLLECTION_ID!,
       [Query.equal("userId", [userId])]
     );
-    return parseStringify(issues.documents);
+
+    const parsedIssues: TCreateIssue[] = issues.documents.map((issue) => ({
+      userId: issue.userId,
+      transactionId: issue.transactionId,
+      subject: issue.subject,
+      description: issue.description,
+      id: issue.$id, // Assuming '$id' corresponds to the optional 'id' in TCreateIssue
+    }));
+
+    return parsedIssues;
   } catch (error) {
     const err = error as TErrorResponse;
     throw err.message;

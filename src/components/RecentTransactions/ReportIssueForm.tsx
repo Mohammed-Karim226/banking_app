@@ -17,15 +17,13 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea"; // Assuming you have a Textarea component
-import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
 import { TErrorResponse, Transaction } from "@/src/types";
 import { toast } from "react-hot-toast";
 import { createIssue } from "@/src/utils/actions/user.actions";

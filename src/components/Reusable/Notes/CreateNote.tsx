@@ -6,7 +6,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -14,7 +13,6 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -31,7 +29,6 @@ import { useState } from "react";
 import { TErrorResponse } from "@/src/types";
 import { toast } from "react-hot-toast";
 import { createNote } from "@/src/utils/actions/user.actions";
-import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setFetch } from "@/src/features/userData/userDataSlice";
 
@@ -129,7 +126,7 @@ const CreateNote = ({ userId }: INoteCreation) => {
               <FormField
                 control={form.control}
                 name="title"
-                render={({ field }) => (
+                render={({}) => (
                   <FormItem>
                     <FormLabel className="font-medium text-lg text-slate-700">
                       Note For:{" "}

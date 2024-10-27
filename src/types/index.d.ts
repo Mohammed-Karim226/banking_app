@@ -34,7 +34,6 @@ declare type User = {
   firstName: string;
   lastName: string;
   name: string;
-  labels?: string;
   address1: string;
   city: string;
   state: string;
@@ -54,7 +53,7 @@ declare type Account = {
   id: string;
   availableBalance: number;
   currentBalance: number;
-  officialName: string;
+  officialName: string | null;
   mask: string;
   institutionId: string;
   name: string;
@@ -197,7 +196,7 @@ declare interface AuthFormProps {
 
 declare interface BankDropdownProps {
   accounts: Account[];
-  setValue?: UseFormSetValue<any>;
+  setValue?: UseFormSetValue<FormValues>;
   otherStyles?: string;
 }
 

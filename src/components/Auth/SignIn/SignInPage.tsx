@@ -8,7 +8,6 @@ import { Button } from "../../ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -16,7 +15,6 @@ import {
 } from "../../ui/form";
 import { Input } from "../../ui/input";
 import Image from "next/image";
-import { Compare } from "../../ui/compare";
 import toast from "react-hot-toast";
 
 import { useEffect, useState } from "react";

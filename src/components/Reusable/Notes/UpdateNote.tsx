@@ -1,6 +1,5 @@
 "use client";
 
-import { NoteAdd } from "iconsax-react";
 import { Button } from "../../ui/button";
 import {
   Dialog,
@@ -49,11 +48,7 @@ interface UpdateNoteProps {
   onUpdateSuccess: () => void;
 }
 
-const UpdateNote = ({
-  userId,
-  initialNote,
-  onUpdateSuccess,
-}: UpdateNoteProps) => {
+const UpdateNote = ({ initialNote, onUpdateSuccess }: UpdateNoteProps) => {
   const [selectedType, setSelectedType] = useState<string>("");
   const [open, setOpen] = useState(false);
 
@@ -131,7 +126,7 @@ const UpdateNote = ({
               <FormField
                 control={form.control}
                 name="title"
-                render={({ field }) => (
+                render={({}) => (
                   <FormItem>
                     <FormLabel className="font-medium text-lg text-slate-700">
                       Note For:{" "}

@@ -6,10 +6,7 @@ import TransactionsTable from "../RecentTransactions/TransactionsTable";
 import { formatAmount } from "@/lib/utils";
 import MainHeader from "../Layouts/MainHeader/MainHeader";
 
-const TransactionHistoryPage = async ({
-  params,
-  searchParams,
-}: SearchParamProps) => {
+const TransactionHistoryPage = async ({ searchParams }: SearchParamProps) => {
   const id = Array.isArray(searchParams.id)
     ? searchParams.id[0]
     : searchParams.id;
@@ -19,7 +16,7 @@ const TransactionHistoryPage = async ({
   const currentPage = Number(page) || 1;
 
   const userInfo = await getLoggedInUser();
-  const accounts = await getAccounts({ userId: userInfo?.$id });
+  const accounts = await getAccounts({ userId: userInfo?.$id ?? "" });
 
   if (!accounts) return null;
 
@@ -29,7 +26,7 @@ const TransactionHistoryPage = async ({
   const account = await getAccount({ appwriteItemId });
 
   const rowPerPage = 10;
-  const totalPages = Math.ceil(account?.transactions.length / rowPerPage);
+  const totalPages = Math.ceil(account?.transactions.length || 0 / rowPerPage);
   const indexOfLastTransaction = currentPage * rowPerPage;
   const indexOfFirstTransaction = indexOfLastTransaction - rowPerPage;
   const currentTransactions = account?.transactions.slice(
@@ -66,7 +63,7 @@ const TransactionHistoryPage = async ({
           <div className="transactions-account-balance">
             <p className="text-14 dark:text-slate-600">Current Balance</p>
             <p className="text-24 text-center font-bold dark:text-slate-600">
-              {formatAmount(account?.data?.currentBalance)}
+              {formatAmount(account?.data?.currentBalance ?? 0)}
             </p>
           </div>
         </div>
@@ -74,7 +71,7 @@ const TransactionHistoryPage = async ({
         <section className="flex flex-col gap-6 w-full">
           <TransactionsTable
             history={true}
-            transactions={currentTransactions}
+            transactions={currentTransactions ?? []}
           />
           {totalPages > 1 && (
             <div className="my-4 w-full">

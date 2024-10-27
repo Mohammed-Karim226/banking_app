@@ -14,28 +14,24 @@ import {
   Trash2,
 } from "lucide-react";
 
-import Lottie from "lottie-react";
-import animatedBg from "./Lottie/animatedBg.json";
-
 interface IUserDetails {
-  email: string;
-  userId: string;
-  dwollaCustomerUrl: string;
-  dwollaCustomerId: string;
-  firstName: string;
-  lastName: string;
-  address1: string;
-  postalCode: string;
-  dateOfBirth: string;
-  ssn: string;
-  city: string;
-  state: string;
-  $id: string;
-  $createdAt: string;
-  $updatedAt: string;
-  $permissions: any[];
-  $databaseId: string;
-  $collectionId: string;
+  email?: string;
+  userId?: string;
+  dwollaCustomerUrl?: string;
+  dwollaCustomerId?: string;
+  firstName?: string;
+  lastName?: string;
+  address1?: string;
+  postalCode?: string;
+  dateOfBirth?: string;
+  ssn?: string;
+  city?: string;
+  state?: string;
+  $id?: string;
+  $createdAt?: string;
+  $updatedAt?: string;
+  $databaseId?: string;
+  $collectionId?: string;
 }
 
 const UserInfo = ({ info }: { info: IUserDetails }) => {
@@ -106,7 +102,7 @@ const UserInfo = ({ info }: { info: IUserDetails }) => {
               <div>
                 <p className="font-semibold text-gray-700">Date of Birth:</p>
                 <p className="text-gray-600">
-                  {new Date(info.dateOfBirth).toLocaleDateString()}
+                  {new Date(info.dateOfBirth!).toLocaleDateString()}
                 </p>
               </div>
             </div>
@@ -117,7 +113,7 @@ const UserInfo = ({ info }: { info: IUserDetails }) => {
               <div>
                 <p className="font-semibold text-gray-700">Account Created:</p>
                 <p className="text-gray-600">
-                  {new Date(info.$createdAt).toLocaleString()}
+                  {new Date(info.$createdAt!).toLocaleString()}
                 </p>
               </div>
             </div>
@@ -139,25 +135,6 @@ const UserInfo = ({ info }: { info: IUserDetails }) => {
               <div>
                 <p className="font-semibold text-gray-700">SSN:</p>
                 <p className="text-gray-600">{info.ssn}</p>
-              </div>
-            </div>
-
-            {/* Permissions */}
-            <div className="flex items-start space-x-2">
-              <User className="text-purple-500 w-5 h-5 mt-1" />
-              <div>
-                <p className="font-semibold text-gray-700">Permissions:</p>
-                {info.$permissions.length > 0 ? (
-                  <ul className="text-gray-600 list-disc pl-4">
-                    {info.$permissions.map((permission, index) => (
-                      <li key={index}>{permission}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-gray-500 italic">
-                    No permissions available
-                  </p>
-                )}
               </div>
             </div>
           </div>

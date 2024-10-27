@@ -1,9 +1,9 @@
 "use client";
-import { Button } from "../../ui/button";
-import { TNote, getUserInfoProps } from "@/src/types";
-import { getLoggedInUser, getNotes } from "@/src/utils/actions/user.actions";
+
+import { TNote } from "@/src/types";
+import { getNotes } from "@/src/utils/actions/user.actions";
 import dayjs from "dayjs";
-import { Clock, Edit, Loader, Trash } from "lucide-react";
+import { Clock } from "lucide-react";
 import { useEffect, useState } from "react";
 import UpdateNote from "../../Reusable/Notes/UpdateNote";
 import DeleteConfirmationDialog from "../../Reusable/Notes/DeleteConfirmationDialog";
@@ -13,12 +13,13 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 const GetNotes = ({ userId }: { userId: string }) => {
-  const [note, setNote] = useState([]);
-
+  const [note, setNote] = useState<TNote[]>([]);
+  console.log(note);
   const refetch = useSelector((state: TRootState) => state.user.refetch);
 
   const fetchNotes = async () => {
     const fetchedNotes = await getNotes({ userId });
+
     setNote(fetchedNotes);
   };
 
@@ -47,6 +48,7 @@ const GetNotes = ({ userId }: { userId: string }) => {
       ) : (
         note.map((n: TNote) => (
           <div
+            key={n.id}
             className={cn(
               "flex w-full border bg-slate-50/20 border-slate-100 dark:border-slate-800 rounded-md p-4 shadow-md justify-between items-start"
             )}

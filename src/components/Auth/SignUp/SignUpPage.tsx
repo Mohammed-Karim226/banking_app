@@ -16,7 +16,6 @@ import {
 
 import { Input } from "../../ui/input";
 import Image from "next/image";
-import { Compare } from "../../ui/compare";
 
 import { useState } from "react";
 import { Eye, EyeOff, Loader } from "lucide-react";
@@ -32,6 +31,7 @@ import { cn } from "@/lib/utils";
 import Lottie from "lottie-react";
 
 import bank1 from "./Lottie/bank1.json";
+import { Models } from "node-appwrite";
 
 const formSchema = z.object({
   email: z
@@ -60,7 +60,7 @@ const formSchema = z.object({
 });
 
 const SignUpPage = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<Models.Document | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -90,7 +90,6 @@ const SignUpPage = () => {
       };
       const newUser = await signUp(userData);
       setUser(newUser);
-      console.log(user);
     } catch (error) {
       const errr = error as TErrorResponse;
       toast.error(errr.message, {

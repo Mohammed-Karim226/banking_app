@@ -1,15 +1,7 @@
 "use client";
 import { SiderbarProps } from "@/src/types";
 
-import {
-  SheetTrigger,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-  Sheet,
-  SheetFooter,
-} from "../../ui/sheet";
+import { SheetTrigger, SheetContent, Sheet, SheetFooter } from "../../ui/sheet";
 import { useTheme } from "next-themes";
 
 import {

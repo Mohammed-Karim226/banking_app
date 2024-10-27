@@ -13,7 +13,6 @@ import { useState } from "react";
 import { deleteNote } from "@/src/utils/actions/user.actions"; // Make sure the path is correct
 import { toast } from "react-hot-toast";
 import { Trash } from "lucide-react";
-import Image from "next/image";
 import { Danger } from "iconsax-react";
 
 interface DeleteConfirmationDialogProps {

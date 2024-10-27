@@ -5,27 +5,20 @@ import { getAccount, getAccounts } from "@/src/utils/actions/bank.actions";
 import BankCard from "../BankCard/BankCard";
 import { formatAmount } from "@/lib/utils";
 
-const MyBanksPage = async ({ params, searchParams }: SearchParamProps) => {
+const MyBanksPage = async ({ searchParams }: SearchParamProps) => {
   const id = Array.isArray(searchParams.id)
     ? searchParams.id[0]
     : searchParams.id;
-  const page = Array.isArray(searchParams.page)
-    ? searchParams.page[0]
-    : searchParams.page;
-
-  const currentPage = Number(page as string) || 1;
 
   const userInfo = await getLoggedInUser();
   const accounts = await getAccounts({
-    userId: userInfo?.$id,
+    userId: userInfo?.$id ?? "",
   });
 
   if (!accounts) return;
 
   const accountsData = accounts?.data;
   const appwriteItemId = (id as string) || accountsData[0].appwriteItemId;
-
-  const account = await getAccount({ appwriteItemId });
 
   return (
     <section className="flex">

@@ -3,9 +3,6 @@ import { useState, useEffect } from "react";
 import bankAnimation from "../../constants/Lottie/bankAnimation.json";
 import Lottie from "lottie-react";
 import { cn } from "@/lib/utils";
-import { useSelector, useDispatch } from "react-redux";
-import { TRootState } from "@/src/store/redux";
-import { setInitialAnimation } from "@/src/features/userData/userDataSlice";
 import { motion } from "framer-motion";
 
 const InitialAnimation = () => {
