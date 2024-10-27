@@ -1,24 +1,17 @@
-import { Account, SearchParamProps } from "@/src/types";
+import { Account } from "@/src/types";
 import MainHeader from "../Layouts/MainHeader/MainHeader";
 import { getLoggedInUser } from "@/src/utils/actions/user.actions";
-import { getAccount, getAccounts } from "@/src/utils/actions/bank.actions";
+import { getAccounts } from "@/src/utils/actions/bank.actions";
 import BankCard from "../BankCard/BankCard";
 import { formatAmount } from "@/lib/utils";
 
-const MyBanksPage = async ({ searchParams }: SearchParamProps) => {
-  const id = Array.isArray(searchParams.id)
-    ? searchParams.id[0]
-    : searchParams.id;
-
+const MyBanksPage = async () => {
   const userInfo = await getLoggedInUser();
   const accounts = await getAccounts({
     userId: userInfo?.$id ?? "",
   });
 
   if (!accounts) return;
-
-  const accountsData = accounts?.data;
-  const appwriteItemId = (id as string) || accountsData[0].appwriteItemId;
 
   return (
     <section className="flex">

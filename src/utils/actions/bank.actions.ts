@@ -150,12 +150,25 @@ export const getInstitution = async ({
   }
 };
 
+interface PlaidTransaction {
+  id: string;
+  name: string;
+  paymentChannel: string;
+  type: string;
+  accountId: string;
+  amount: number;
+  pending: boolean;
+  category: string;
+  date: string;
+  image?: string;
+}
+
 // Get transactions
 export const getTransactions = async ({
   accessToken,
 }: getTransactionsProps) => {
   let hasMore = true;
-  let transactions: any = [];
+  let transactions: PlaidTransaction[] = [];
 
   try {
     // Iterate through each page of new transaction updates for item

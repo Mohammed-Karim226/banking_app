@@ -70,7 +70,7 @@ const UpdateNote = ({ initialNote, onUpdateSuccess }: UpdateNoteProps) => {
   useEffect(() => {
     setSelectedType(initialNote.title);
     form.setValue("content", initialNote.content);
-  }, [initialNote]);
+  }, [initialNote, form]);
 
   const handleType = (type: string) => {
     setSelectedType(type);

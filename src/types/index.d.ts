@@ -55,7 +55,7 @@ declare type Account = {
   currentBalance: number;
   officialName: string | null;
   mask: string;
-  institutionId: string;
+  institutionId?: string;
   name: string;
   type: string;
   subtype: string;

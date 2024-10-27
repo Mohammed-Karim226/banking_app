@@ -5,7 +5,6 @@ import { ScrollArea } from "../../ui/scroll-area";
 import {
   MapPin,
   Calendar,
-  User,
   Key,
   Clock,
   ShieldAlert,

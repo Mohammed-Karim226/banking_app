@@ -32,7 +32,7 @@ const PlaidLink = ({ user, variant, isOpen }: PlaidLinkProps) => {
       await exchangePublicToken({ publicToken: public_token, user });
       router.push("/");
     },
-    [user]
+    [user, router]
   );
 
   const config: PlaidLinkOptions = {

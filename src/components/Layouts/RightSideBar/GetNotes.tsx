@@ -4,7 +4,7 @@ import { TNote } from "@/src/types";
 import { getNotes } from "@/src/utils/actions/user.actions";
 import dayjs from "dayjs";
 import { Clock } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import UpdateNote from "../../Reusable/Notes/UpdateNote";
 import DeleteConfirmationDialog from "../../Reusable/Notes/DeleteConfirmationDialog";
 import { useSelector } from "react-redux";
@@ -17,15 +17,15 @@ const GetNotes = ({ userId }: { userId: string }) => {
   console.log(note);
   const refetch = useSelector((state: TRootState) => state.user.refetch);
 
-  const fetchNotes = async () => {
+  const fetchNotes = useCallback(async () => {
     const fetchedNotes = await getNotes({ userId });
 
     setNote(fetchedNotes);
-  };
+  }, [userId]);
 
   useEffect(() => {
     fetchNotes();
-  }, [userId, refetch]);
+  }, [fetchNotes, refetch]);
 
   const NotesOptions = [
     { name: "payments", image: "/icons/payments.png" },

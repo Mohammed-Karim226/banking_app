@@ -1,4 +1,3 @@
-import { SearchParamProps } from "@/src/types";
 import MainHeader from "../Layouts/MainHeader/MainHeader";
 import PaymentTransferForm from "./PaymentTransferForm";
 import { getLoggedInUser } from "@/src/utils/actions/user.actions";
