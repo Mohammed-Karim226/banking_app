@@ -34,4 +34,9 @@ Key Features that Power NexPay:
 Creating NexPay has been a rewarding journey, focused on combining tech and finance to empower users in managing their financial journeys with confidence.
 
 #SaaS #FinTech #Nextjs #FinancialServices #Plaid #Dwolla #Appwrite #FramerMotion #FrontendDevelopment #Finance #Innovation #TailwindCSS #TechForGood
+![Screenshot_1](https://github.com/user-attachments/assets/a76cd034-e377-41cd-9969-7662e7ceca5e)
 
+![Screenshot_5](https://github.com/user-attachments/assets/86ac7302-1ed1-4da0-9acb-2a804a1dad0f)
+![Screenshot_4](https://github.com/user-attachments/assets/b2f2f5a6-0029-41d8-982b-f519e57b93d9)
+![Screenshot_3](https://github.com/user-attachments/assets/9bc6ee1b-836b-4ef2-9b2d-3287db852d4e)
+![Screenshot_2](https://github.com/user-attachments/assets/91abf57b-687d-4d5e-9f28-8903f85f8f56)
