@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Edited PaymentTransferForm.tsx
+Edited PaymentTransferForm.tsx
+Edited PaymentTransferForm.tsx
+Viewed .env:1-24
 
-## Getting Started
+# System Overview – Banking App
 
-First, run the development server:
+## 1. Purpose
+A **React‑based personal‑banking web application** that lets users:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+* **Link external bank accounts** via Plaid.
+* **View balances & transaction history**.
+* **Create and send transfers** (Dwolla funding sources → Dwolla customers).
+* **Manage accounts** stored in **Appwrite** (backend‑as‑a‑service).
+
+The UI is built with **Next.js** (client‑side rendering), **shadcn/ui** components, and **react‑hook‑form** for robust form handling.
+
+---
+
+## 2. High‑Level Architecture
+
+| Layer | Technology | Responsibility |
+|-------|------------|-----------------|
+| **Frontend** | Next.js (React), TypeScript, Tailwind CSS, shadcn/ui, react‑select, lucide‑react | UI, routing, form validation, state |
+| **Auth / Data Store** | **Appwrite** (DB, auth, storage) | User accounts, collections for banks, transactions |
+| **Bank Linking** | **Plaid** (client SDK) | Securely fetch account metadata from external banks |
+| **Payments** | **Dwolla** (sandbox) | Create funding sources, execute ACH transfers |
+| **Environment** | `.env` (NEXT_PUBLIC_*, secret keys) | Configurable endpoints and API keys for each service |
+
+All data flows **client → Appwrite** (REST) → **Plaid/Dwolla** where needed; UI reacts to the responses.
+
+---
+
+## 3. Key Project Structure (relevant parts)
+
+```
+/src
+ ├─ components/
+ │   └─ TransferPage/
+ │        └─ PaymentTransferForm.tsx   <-- Transfer form UI & logic
+ ├─ types/
+ │   └─ index.d.ts                    <-- Global TypeScript types
+ ├─ app/…
+ └─ ... (other pages, layout, UI components)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 4. Data Flow Example – Transfer
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **User selects source bank** (via the `Select` component).  
+2. Form values are validated (Zod) → `onSubmit` fires.  
+3. **API call** (client → Next.js API route):  
+   * Reads the selected `Account` to get `appwriteItemId`.  
+   * Calls **Appwrite** to fetch the related funding source URL.  
+   * Sends a request to **Dwolla** to create a transaction (`CreateTransactionProps`).  
+4. On success, the UI updates the transaction list (via `TransactionHistoryTableProps`).
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### TL;DR
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* **Frontend:** Next.js + TypeScript + Tailwind + shadcn/ui, forms validated by Zod.  
+* **Backend services:** Appwrite (DB, auth), Plaid (bank linking), Dwolla (ACH payments).  
+* **Core component:** `PaymentTransferForm` handles account selection & transfer submission.  
+* **Configuration:** All keys/endpoints live in `.env`; public keys are prefixed with `NEXT_PUBLIC_`.  
+* **Extensibility:** Add new types, API routes, or UI components following the existing patterns; keep secrets server‑side only.  
