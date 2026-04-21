@@ -34,8 +34,6 @@ export const Compare = ({
 
   const sliderRef = useRef<HTMLDivElement>(null);
 
-  const [isMouseOver, setIsMouseOver] = useState(false);
-
   const autoplayRef = useRef<NodeJS.Timeout | null>(null);
 
   const startAutoplay = useCallback(() => {
@@ -68,12 +66,10 @@ export const Compare = ({
   }, [startAutoplay, stopAutoplay]);
 
   function mouseEnterHandler() {
-    setIsMouseOver(true);
     stopAutoplay();
   }
 
   function mouseLeaveHandler() {
-    setIsMouseOver(false);
     if (slideMode === "hover") {
       setSliderXPercent(initialSliderPercentage);
     }
@@ -84,7 +80,7 @@ export const Compare = ({
   }
 
   const handleStart = useCallback(
-    (clientX: number) => {
+    () => {
       if (slideMode === "drag") {
         setIsDragging(true);
       }
@@ -114,7 +110,7 @@ export const Compare = ({
   );
 
   const handleMouseDown = useCallback(
-    (e: React.MouseEvent) => handleStart(e.clientX),
+    () => handleStart(),
     [handleStart]
   );
   const handleMouseUp = useCallback(() => handleEnd(), [handleEnd]);
@@ -126,7 +122,7 @@ export const Compare = ({
   const handleTouchStart = useCallback(
     (e: React.TouchEvent) => {
       if (!autoplay) {
-        handleStart(e.touches[0].clientX);
+        handleStart();
       }
     },
     [handleStart, autoplay]
@@ -206,6 +202,7 @@ export const Compare = ({
               }}
               transition={{ duration: 0 }}
             >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 alt="first image"
                 src={firstImage}
@@ -214,6 +211,8 @@ export const Compare = ({
                   firstImageClassName
                 )}
                 draggable={false}
+                loading="lazy"
+                decoding="async"
               />
             </motion.div>
           ) : null}
@@ -222,6 +221,7 @@ export const Compare = ({
 
       <AnimatePresence initial={false}>
         {secondImage ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
           <motion.img
             className={cn(
               "absolute top-0 left-0 z-[19]  rounded-2xl w-full h-full select-none",
@@ -230,6 +230,8 @@ export const Compare = ({
             alt="second image"
             src={secondImage}
             draggable={false}
+            loading="lazy"
+            decoding="async"
           />
         ) : null}
       </AnimatePresence>

@@ -29,7 +29,7 @@ const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
       await exchangePublicToken({ publicToken: public_token, user });
       router.push("/");
     },
-    [user]
+    [router, user]
   );
 
   const config: PlaidLinkOptions = {
@@ -37,7 +37,7 @@ const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
     onSuccess,
   };
 
-  const { open, exit, ready } = usePlaidLink(config);
+  const { open, ready } = usePlaidLink(config);
   return (
     <>
       {variant === "primary" ? (

@@ -28,7 +28,7 @@ import { toast } from "react-hot-toast";
 import { signUp } from "@/src/utils/actions/user.actions";
 
 import PlaidLink from "./PlaidLink";
-import { cn, parseStringify } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   email: z
@@ -87,7 +87,6 @@ const SignUpPage = () => {
       };
       const newUser = await signUp(userData);
       setUser(newUser);
-      console.log(user);
     } catch (error) {
       const errr = error as TErrorResponse;
       toast.error(errr.message, {

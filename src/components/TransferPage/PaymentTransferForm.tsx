@@ -1,17 +1,15 @@
 "use client";
 
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "../ui/form";
 import { Textarea } from "../ui/textarea";
@@ -26,10 +24,10 @@ const formSchema = z.object({
   sharableId: z.string().min(8, "Please select a valid sharable Id"),
 });
 
-import Select from "react-select";
-import { useState } from "react";
-import { Loader } from "lucide-react";
 import { Account, PaymentTransferFormProps } from "@/src/types";
+import { Loader } from "lucide-react";
+import { useState } from "react";
+import Select from "react-select";
 
 interface IAccountOption {
   value: string;
@@ -92,19 +90,25 @@ const PaymentTransferForm = ({
                     </div>
                     <div className="flex justify-center items-center">
                       <Select
-                        {...field}
                         options={accounts?.map((acc: Account) => ({
                           label: String(acc?.name),
                           value: String(acc?.id),
                         }))}
                         className="w-[512px] max-sm:w-[320px]"
-                        value={accounts?.find(
-                          (acc: Account) =>
-                            acc.appwriteItemId === appwriteItemId
-                        )}
-                        onChange={(selectedOption) =>
-                          setValue("senderBank", selectedOption?.value || "")
+                        value={
+                          accounts
+                            ?.map((acc: Account) => ({
+                              label: String(acc?.name),
+                              value: String(acc?.id),
+                            }))
+                            ?.find((option) => option.value === field.value) ??
+                          null
                         }
+                        onChange={(selectedOption: IAccountOption | null) =>
+                          field.onChange(selectedOption?.value ?? "")
+                        }
+                        onBlur={field.onBlur}
+                        name={field.name}
                       />
                     </div>
                   </div>
